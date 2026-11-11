@@ -259,6 +259,16 @@ var Route$1 = createRootRoute({
 				crossOrigin: "anonymous"
 			},
 			{
+				rel: "stylesheet",
+				href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;450;500;600&family=Great+Vibes&family=Noto+Naskh+Arabic:wght@400;500&display=swap"
+			},
+			{
+				rel: "preload",
+				as: "image",
+				href: "/img/wedding-florals.webp",
+				type: "image/webp"
+			},
+			{
 				rel: "canonical",
 				href: siteUrl
 			},
@@ -282,7 +292,7 @@ function RootDocument({ children }) {
 	});
 }
 // src/routes/index.tsx
-var $$splitComponentImporter = () => import("./routes-BbSUdLMS.js");
+var $$splitComponentImporter = () => import("./routes-BJDBXFe8.js");
 // src/routeTree.gen.ts
 var rootRouteChildren = { IndexRoute: createFileRoute("/")({ component: lazyRouteComponent($$splitComponentImporter, "component") }).update({
 	id: "/",

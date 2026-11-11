@@ -1,4 +1,4 @@
-import { n as siteUrl } from "./router-Crp6gM3g.js";
+import { n as siteUrl } from "./router-BtuwyeUq.js";
 import { useEffect, useRef, useState } from "react";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { ArrowDown, ArrowUpRight, CalendarDays, Check, Heart, MapPin, Share2 } from "lucide-react";
