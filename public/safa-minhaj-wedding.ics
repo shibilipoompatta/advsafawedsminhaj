@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Safa and Minhaj//Wedding Invitation//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:safa-minhaj-20261129@wedding-invitation-0b3d5e.netlify.app
+DTSTAMP:20261103T120000Z
+DTSTART:20261129T044500Z
+DTEND:20261129T083000Z
+SUMMARY:Wedding of Adv. Safa Janna TK & Muhammed Minhaj NC
+DESCRIPTION:Nikah at 10:15 AM IST. Reception from 11:00 AM to 2:00 PM IST
+ .\nWith love and blessings from our families.
+LOCATION:NC Convention Centre\, Pulparamba\, Mukkam\, Kozhikode\, Kerala
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR
