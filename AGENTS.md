@@ -8,17 +8,17 @@ A romantic floral digital wedding invitation for Adv. Safa Janna TK and Muhammed
 
 ### Tech Stack
 
-| Layer         | Technology                                          |
-| ------------- | --------------------------------------------------- |
-| Framework     | TanStack Start                                      |
-| Frontend      | React 19, TanStack Router                           |
-| Build         | Vite 8                                              |
-| Styling       | Tailwind CSS 4, theme variables in `src/styles.css` |
-| UI Components | shadcn/ui (Radix UI + Tailwind)                     |
-| Toasts        | sonner                                              |
-| Icons         | lucide-react                                        |
-| Language      | TypeScript 6.0 (strict mode)                        |
-| Deployment    | Netlify, via `@netlify/vite-plugin-tanstack-start`  |
+| Layer         | Technology                                               |
+| ------------- | -------------------------------------------------------- |
+| Framework     | TanStack Start                                           |
+| Frontend      | React 19, TanStack Router                                |
+| Build         | Vite 8                                                   |
+| Styling       | Tailwind CSS 4, theme variables in `src/styles.css`      |
+| UI Components | shadcn/ui (Radix UI + Tailwind)                          |
+| Toasts        | sonner                                                   |
+| Icons         | lucide-react                                             |
+| Language      | TypeScript 6.0 (strict mode)                             |
+| Deployment    | cloudflare, via `@pages.dev/vite-plugin-tanstack-start`  |
 
 ## Directory Structure
 
