@@ -5,6 +5,8 @@ import { Route } from './index'
 const Home = Route.options.component!
 
 describe('wedding invitation home', () => {
+  const originalUserAgent = navigator.userAgent
+
   beforeEach(() => {
     vi.useFakeTimers()
     vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
@@ -12,11 +14,15 @@ describe('wedding invitation home', () => {
   })
 
   afterEach(() => {
+    Object.defineProperty(navigator, 'userAgent', {
+      value: originalUserAgent,
+      configurable: true,
+    })
     vi.useRealTimers()
     vi.restoreAllMocks()
   })
 
-  it('opens the wax-seal cover on click and exposes the .ics calendar download', () => {
+  it('opens the wax-seal cover on click and renders a single Add to Calendar link', () => {
     vi.setSystemTime(new Date('2026-11-11T12:00:00+05:30'))
     render(<Home />)
 
@@ -31,9 +37,28 @@ describe('wedding invitation home', () => {
     })
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
 
-    const icsLink = screen.getByRole('link', { name: /Apple Calendar & Outlook/i })
-    expect(icsLink).toHaveAttribute('href', '/safa-minhaj-wedding.ics')
-    expect(icsLink).toHaveAttribute('download', 'safa-minhaj-wedding.ics')
+    const calendarLink = screen.getByRole('link', { name: /Add to Calendar/i })
+    expect(calendarLink).toHaveAttribute('href', expect.stringContaining('calendar.google.com'))
+  })
+
+  it('routes Apple devices to the .ics calendar file when clicking Add to Calendar', () => {
+    Object.defineProperty(navigator, 'userAgent', {
+      value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)',
+      configurable: true,
+    })
+    const assignMock = vi.fn()
+    vi.stubGlobal('location', { ...window.location, assign: assignMock })
+
+    render(<Home />)
+    fireEvent.click(screen.getByRole('button', { name: 'Open wedding invitation' }))
+    act(() => {
+      vi.advanceTimersByTime(500)
+    })
+
+    fireEvent.click(screen.getByRole('link', { name: /Add to Calendar/i }))
+    expect(assignMock).toHaveBeenCalledWith('/safa-minhaj-wedding.ics')
+
+    vi.unstubAllGlobals()
   })
 
   it('shows wedding-day and post-wedding countdown milestones', () => {

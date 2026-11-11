@@ -270,7 +270,7 @@ function RootDocument({ children }) {
 	});
 }
 // src/routes/index.tsx
-var $$splitComponentImporter = () => import("./routes-ChOSqYuL.js");
+var $$splitComponentImporter = () => import("./routes-C0tYiPbU.js");
 // src/routeTree.gen.ts
 var rootRouteChildren = { IndexRoute: createFileRoute("/")({ component: lazyRouteComponent($$splitComponentImporter, "component") }).update({
 	id: "/",

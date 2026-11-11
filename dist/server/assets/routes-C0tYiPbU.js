@@ -1,7 +1,7 @@
-import { n as siteUrl } from "./router-2YsHlPEs.js";
+import { n as siteUrl } from "./router-BCpXPWkX.js";
 import { useEffect, useRef, useState } from "react";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, Download, Heart, MapPin, Share2 } from "lucide-react";
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, Heart, MapPin, Share2 } from "lucide-react";
 // src/routes/index.tsx?tsr-split=component
 var weddingDate = (/* @__PURE__ */ new Date("2026-11-29T10:15:00+05:30")).getTime();
 var weddingDayEnd = (/* @__PURE__ */ new Date("2026-11-29T23:59:59+05:30")).getTime();
@@ -14,6 +14,18 @@ var googleCalendarUrl = `https://calendar.google.com/calendar/render?${new URLSe
 	location: "NC Convention Centre, Pulparamba, Mukkam, Kozhikode, Kerala"
 })}`;
 var mapUrl = "https://www.google.com/maps/search/?api=1&query=NC+Convention+Centre+Pulparamba+Mukkam+Kozhikode";
+var icsUrl = "/safa-minhaj-wedding.ics";
+function isAppleDevice() {
+	if (typeof navigator === "undefined") return false;
+	const ua = navigator.userAgent;
+	return /iPad|iPhone|iPod/.test(ua) || navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1 || /Macintosh|Mac OS X/.test(ua);
+}
+function handleCalendarClick(event) {
+	if (isAppleDevice()) {
+		event.preventDefault();
+		window.location.assign(icsUrl);
+	}
+}
 function Countdown() {
 	const [now, setNow] = useState(null);
 	useEffect(() => {
@@ -233,6 +245,7 @@ function Home() {
 						href: googleCalendarUrl,
 						target: "_blank",
 						rel: "noopener noreferrer",
+						onClick: handleCalendarClick,
 						children: [/* @__PURE__ */ jsx(CalendarDays, { size: 14 }), " Save the date"]
 					})
 				]
@@ -436,24 +449,17 @@ function Home() {
 					}),
 					/* @__PURE__ */ jsxs("h2", { children: ["Until our ", /* @__PURE__ */ jsx("em", { children: "forever begins." })] }),
 					/* @__PURE__ */ jsx(Countdown, {}),
-					/* @__PURE__ */ jsxs("div", {
-						className: "calendar-actions",
-						children: [/* @__PURE__ */ jsxs("a", {
-							className: "button",
-							href: googleCalendarUrl,
-							target: "_blank",
-							rel: "noopener noreferrer",
-							children: [
-								/* @__PURE__ */ jsx(CalendarDays, { size: 16 }),
-								" Add to Google Calendar ",
-								/* @__PURE__ */ jsx(ArrowUpRight, { size: 15 })
-							]
-						}), /* @__PURE__ */ jsxs("a", {
-							className: "calendar-ics",
-							href: "/safa-minhaj-wedding.ics",
-							download: "safa-minhaj-wedding.ics",
-							children: [/* @__PURE__ */ jsx(Download, { size: 13 }), " Apple Calendar & Outlook (.ics)"]
-						})]
+					/* @__PURE__ */ jsxs("a", {
+						className: "button",
+						href: googleCalendarUrl,
+						target: "_blank",
+						rel: "noopener noreferrer",
+						onClick: handleCalendarClick,
+						children: [
+							/* @__PURE__ */ jsx(CalendarDays, { size: 16 }),
+							" Add to Calendar ",
+							/* @__PURE__ */ jsx(ArrowUpRight, { size: 15 })
+						]
 					}),
 					/* @__PURE__ */ jsx("p", {
 						className: "time-note",
