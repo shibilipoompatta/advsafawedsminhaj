@@ -39,6 +39,7 @@ describe('wedding invitation home', () => {
 
     const calendarLink = screen.getByRole('link', { name: /Add to Calendar/i })
     expect(calendarLink).toHaveAttribute('href', expect.stringContaining('calendar.google.com'))
+    expect(screen.getByText(/Near Chennamangallur · ~4 km from Mukkam town/i)).toBeInTheDocument()
   })
 
   it('routes Apple devices to the .ics calendar file when clicking Add to Calendar', () => {

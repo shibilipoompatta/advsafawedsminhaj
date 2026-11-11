@@ -248,13 +248,25 @@ var Route$1 = createRootRoute({
 				content: shareImageAlt
 			}
 		],
-		links: [{
-			rel: "canonical",
-			href: siteUrl
-		}, {
-			rel: "icon",
-			href: "/favicon.ico"
-		}]
+		links: [
+			{
+				rel: "preconnect",
+				href: "https://fonts.googleapis.com"
+			},
+			{
+				rel: "preconnect",
+				href: "https://fonts.gstatic.com",
+				crossOrigin: "anonymous"
+			},
+			{
+				rel: "canonical",
+				href: siteUrl
+			},
+			{
+				rel: "icon",
+				href: "/favicon.ico"
+			}
+		]
 	}),
 	shellComponent: RootDocument,
 	notFoundComponent: NotFoundPage
@@ -270,7 +282,7 @@ function RootDocument({ children }) {
 	});
 }
 // src/routes/index.tsx
-var $$splitComponentImporter = () => import("./routes-C0tYiPbU.js");
+var $$splitComponentImporter = () => import("./routes-BbSUdLMS.js");
 // src/routeTree.gen.ts
 var rootRouteChildren = { IndexRoute: createFileRoute("/")({ component: lazyRouteComponent($$splitComponentImporter, "component") }).update({
 	id: "/",

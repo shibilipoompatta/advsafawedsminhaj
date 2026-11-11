@@ -61,6 +61,8 @@ export const Route = createRootRoute({
       { name: 'twitter:image:alt', content: shareImageAlt },
     ],
     links: [
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       { rel: 'canonical', href: siteUrl },
       { rel: 'icon', href: '/favicon.ico' },
     ],

@@ -1,4 +1,4 @@
-import { n as siteUrl } from "./router-BCpXPWkX.js";
+import { n as siteUrl } from "./router-Crp6gM3g.js";
 import { useEffect, useRef, useState } from "react";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { ArrowDown, ArrowUpRight, CalendarDays, Check, Heart, MapPin, Share2 } from "lucide-react";
@@ -25,6 +25,34 @@ function handleCalendarClick(event) {
 		event.preventDefault();
 		window.location.assign(icsUrl);
 	}
+}
+function useReveal() {
+	const ref = useRef(null);
+	useEffect(() => {
+		const el = ref.current;
+		if (!el) return;
+		if (typeof IntersectionObserver === "undefined" || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+			el.dataset.reveal = "visible";
+			return;
+		}
+		if (el.getBoundingClientRect().top < window.innerHeight * .92) {
+			el.dataset.reveal = "visible";
+			return;
+		}
+		el.dataset.reveal = "pending";
+		const observer = new IntersectionObserver((entries) => {
+			for (const entry of entries) if (entry.isIntersecting) {
+				el.dataset.reveal = "visible";
+				observer.unobserve(el);
+			}
+		}, {
+			threshold: .12,
+			rootMargin: "0px 0px -40px 0px"
+		});
+		observer.observe(el);
+		return () => observer.disconnect();
+	}, []);
+	return ref;
 }
 function Countdown() {
 	const [now, setNow] = useState(null);
@@ -183,6 +211,10 @@ function Home() {
 	const [shared, setShared] = useState(false);
 	const [shareMessage, setShareMessage] = useState("");
 	const audioRef = useRef(null);
+	const celebrationRef = useReveal();
+	const countdownRef = useReveal();
+	const venueRef = useReveal();
+	const closingRef = useReveal();
 	useEffect(() => {
 		if (!opened || coverDismissed) return;
 		const timer = window.setTimeout(() => setCoverDismissed(true), 500);
@@ -360,6 +392,7 @@ function Home() {
 				active: opened
 			}),
 			/* @__PURE__ */ jsxs("section", {
+				ref: celebrationRef,
 				className: "welcome section-wrap",
 				id: "celebration",
 				children: [
@@ -441,6 +474,7 @@ function Home() {
 				]
 			}),
 			/* @__PURE__ */ jsxs("section", {
+				ref: countdownRef,
 				className: "countdown-section",
 				children: [
 					/* @__PURE__ */ jsx("p", {
@@ -468,6 +502,7 @@ function Home() {
 				]
 			}),
 			/* @__PURE__ */ jsxs("section", {
+				ref: venueRef,
 				className: "venue section-wrap",
 				id: "venue",
 				children: [/* @__PURE__ */ jsx("div", {
@@ -511,11 +546,18 @@ function Home() {
 							children: [/* @__PURE__ */ jsx(MapPin, {
 								size: 21,
 								strokeWidth: 1.2
-							}), /* @__PURE__ */ jsxs("div", { children: [/* @__PURE__ */ jsx("h3", { children: "NC Convention Centre" }), /* @__PURE__ */ jsxs("p", { children: [
-								"Pulparamba, Mukkam",
-								/* @__PURE__ */ jsx("br", {}),
-								"Kozhikode, Kerala"
-							] })] })]
+							}), /* @__PURE__ */ jsxs("div", { children: [
+								/* @__PURE__ */ jsx("h3", { children: "NC Convention Centre" }),
+								/* @__PURE__ */ jsxs("p", { children: [
+									"Pulparamba, Mukkam",
+									/* @__PURE__ */ jsx("br", {}),
+									"Kozhikode, Kerala"
+								] }),
+								/* @__PURE__ */ jsx("p", {
+									className: "venue-landmark",
+									children: "Near Chennamangallur · ~4 km from Mukkam town"
+								})
+							] })]
 						}),
 						/* @__PURE__ */ jsxs("a", {
 							className: "button",
@@ -532,6 +574,7 @@ function Home() {
 				})]
 			}),
 			/* @__PURE__ */ jsxs("section", {
+				ref: closingRef,
 				className: "closing",
 				children: [
 					/* @__PURE__ */ jsxs("div", {
