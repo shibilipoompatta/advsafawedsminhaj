@@ -1,9 +1,10 @@
-import { n as siteUrl } from "./router-5q_LYxJ4.js";
+import { n as siteUrl } from "./router-2YsHlPEs.js";
 import { useEffect, useRef, useState } from "react";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, Heart, MapPin, Share2 } from "lucide-react";
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, Download, Heart, MapPin, Share2 } from "lucide-react";
 // src/routes/index.tsx?tsr-split=component
 var weddingDate = (/* @__PURE__ */ new Date("2026-11-29T10:15:00+05:30")).getTime();
+var weddingDayEnd = (/* @__PURE__ */ new Date("2026-11-29T23:59:59+05:30")).getTime();
 var googleCalendarUrl = `https://calendar.google.com/calendar/render?${new URLSearchParams({
 	action: "TEMPLATE",
 	text: "Wedding of Adv. Safa Janna TK & Muhammed Minhaj NC",
@@ -14,13 +15,28 @@ var googleCalendarUrl = `https://calendar.google.com/calendar/render?${new URLSe
 })}`;
 var mapUrl = "https://www.google.com/maps/search/?api=1&query=NC+Convention+Centre+Pulparamba+Mukkam+Kozhikode";
 function Countdown() {
-	const [remaining, setRemaining] = useState(null);
+	const [now, setNow] = useState(null);
 	useEffect(() => {
-		const update = () => setRemaining(Math.max(0, weddingDate - Date.now()));
+		const update = () => setNow(Date.now());
 		update();
 		const timer = window.setInterval(update, 1e3);
 		return () => window.clearInterval(timer);
 	}, []);
+	if (now !== null && now >= weddingDate) {
+		const isWeddingDay = now <= weddingDayEnd;
+		return /* @__PURE__ */ jsxs("div", {
+			className: "countdown-milestone",
+			role: "status",
+			children: [/* @__PURE__ */ jsx("p", {
+				className: "milestone-title",
+				children: isWeddingDay ? "Today is the day" : "Happily Married · Alhamdulillah"
+			}), /* @__PURE__ */ jsx("p", {
+				className: "milestone-sub",
+				children: isWeddingDay ? "Join us at NC Convention Centre · Nikah at 10:15 AM IST" : "Thank you for celebrating our special day with us"
+			})]
+		});
+	}
+	const remaining = now === null ? null : Math.max(0, weddingDate - now);
 	const values = remaining === null ? [
 		"—",
 		"—",
@@ -42,11 +58,10 @@ function Countdown() {
 		][i] })] }, i))
 	});
 }
-function InvitationMusic() {
-	const audioRef = useRef(null);
+function InvitationMusic({ audioRef, active }) {
 	useEffect(() => {
 		const audio = audioRef.current;
-		if (!audio) return;
+		if (!audio || !active) return;
 		let disposed = false;
 		const play = () => {
 			if (!disposed && audio.paused) audio.play().catch(() => {});
@@ -68,7 +83,7 @@ function InvitationMusic() {
 			document.removeEventListener("keydown", retryOnInteraction);
 			audio.pause();
 		};
-	}, []);
+	}, [active, audioRef]);
 	return /* @__PURE__ */ jsx("audio", {
 		ref: audioRef,
 		loop: true,
@@ -78,9 +93,95 @@ function InvitationMusic() {
 		src: "/audio/wedding-background-from-21.m4a"
 	});
 }
+function InvitationCover({ closing, onOpen }) {
+	const onOpenRef = useRef(onOpen);
+	useEffect(() => {
+		onOpenRef.current = onOpen;
+	}, [onOpen]);
+	useEffect(() => {
+		if (closing) return;
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = "hidden";
+		const onKeyDown = (event) => {
+			if (event.key === "Escape") onOpenRef.current();
+		};
+		window.addEventListener("keydown", onKeyDown);
+		return () => {
+			document.body.style.overflow = previousOverflow;
+			window.removeEventListener("keydown", onKeyDown);
+		};
+	}, [closing]);
+	return /* @__PURE__ */ jsxs("div", {
+		className: `cover-overlay${closing ? " is-closing" : ""}`,
+		role: "dialog",
+		"aria-modal": "true",
+		"aria-labelledby": "cover-title",
+		children: [/* @__PURE__ */ jsx("div", {
+			className: "cover-florals",
+			"aria-hidden": "true"
+		}), /* @__PURE__ */ jsxs("div", {
+			className: "cover-card",
+			children: [
+				/* @__PURE__ */ jsx("div", { className: "cover-card-inner" }),
+				/* @__PURE__ */ jsx("p", {
+					className: "eyebrow cover-eyebrow",
+					children: "Wedding Invitation"
+				}),
+				/* @__PURE__ */ jsxs("h2", {
+					id: "cover-title",
+					className: "cover-names",
+					children: [
+						"Safa ",
+						/* @__PURE__ */ jsx("span", { children: "&" }),
+						" Minhaj"
+					]
+				}),
+				/* @__PURE__ */ jsx("p", {
+					className: "cover-date",
+					children: "29 · 11 · 2026"
+				}),
+				/* @__PURE__ */ jsxs("button", {
+					type: "button",
+					className: "wax-seal-btn",
+					onClick: onOpen,
+					"aria-label": "Open wedding invitation",
+					children: [/* @__PURE__ */ jsx("span", {
+						className: "wax-seal",
+						"aria-hidden": "true",
+						children: /* @__PURE__ */ jsxs("span", {
+							className: "wax-seal-ring",
+							children: [
+								"S",
+								/* @__PURE__ */ jsx("i", { children: "&" }),
+								"M"
+							]
+						})
+					}), /* @__PURE__ */ jsx("span", {
+						className: "cover-cta",
+						children: "Open Invitation"
+					})]
+				})
+			]
+		})]
+	});
+}
 function Home() {
+	const [opened, setOpened] = useState(false);
+	const [coverDismissed, setCoverDismissed] = useState(false);
 	const [shared, setShared] = useState(false);
 	const [shareMessage, setShareMessage] = useState("");
+	const audioRef = useRef(null);
+	useEffect(() => {
+		if (!opened || coverDismissed) return;
+		const timer = window.setTimeout(() => setCoverDismissed(true), 500);
+		return () => window.clearTimeout(timer);
+	}, [opened, coverDismissed]);
+	function openInvitation() {
+		if (opened) return;
+		setOpened(true);
+		const audio = audioRef.current;
+		if (audio && audio.paused) audio.play().catch(() => {});
+	}
 	async function share() {
 		const data = {
 			title: "Safa & Minhaj · Wedding Invitation",
@@ -100,6 +201,10 @@ function Home() {
 		}
 	}
 	return /* @__PURE__ */ jsxs(Fragment, { children: [
+		!coverDismissed && /* @__PURE__ */ jsx(InvitationCover, {
+			closing: opened,
+			onOpen: openInvitation
+		}),
 		/* @__PURE__ */ jsxs("header", {
 			className: "site-header",
 			children: [/* @__PURE__ */ jsxs("a", {
@@ -237,7 +342,10 @@ function Home() {
 					})
 				]
 			}),
-			/* @__PURE__ */ jsx(InvitationMusic, {}),
+			/* @__PURE__ */ jsx(InvitationMusic, {
+				audioRef,
+				active: opened
+			}),
 			/* @__PURE__ */ jsxs("section", {
 				className: "welcome section-wrap",
 				id: "celebration",
@@ -328,16 +436,24 @@ function Home() {
 					}),
 					/* @__PURE__ */ jsxs("h2", { children: ["Until our ", /* @__PURE__ */ jsx("em", { children: "forever begins." })] }),
 					/* @__PURE__ */ jsx(Countdown, {}),
-					/* @__PURE__ */ jsxs("a", {
-						className: "button",
-						href: googleCalendarUrl,
-						target: "_blank",
-						rel: "noopener noreferrer",
-						children: [
-							/* @__PURE__ */ jsx(CalendarDays, { size: 16 }),
-							" Add to Google Calendar ",
-							/* @__PURE__ */ jsx(ArrowUpRight, { size: 15 })
-						]
+					/* @__PURE__ */ jsxs("div", {
+						className: "calendar-actions",
+						children: [/* @__PURE__ */ jsxs("a", {
+							className: "button",
+							href: googleCalendarUrl,
+							target: "_blank",
+							rel: "noopener noreferrer",
+							children: [
+								/* @__PURE__ */ jsx(CalendarDays, { size: 16 }),
+								" Add to Google Calendar ",
+								/* @__PURE__ */ jsx(ArrowUpRight, { size: 15 })
+							]
+						}), /* @__PURE__ */ jsxs("a", {
+							className: "calendar-ics",
+							href: "/safa-minhaj-wedding.ics",
+							download: "safa-minhaj-wedding.ics",
+							children: [/* @__PURE__ */ jsx(Download, { size: 13 }), " Apple Calendar & Outlook (.ics)"]
+						})]
 					}),
 					/* @__PURE__ */ jsx("p", {
 						className: "time-note",
