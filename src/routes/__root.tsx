@@ -63,6 +63,11 @@ export const Route = createRootRoute({
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;450;500;600&family=Great+Vibes&family=Noto+Naskh+Arabic:wght@400;500&display=swap',
+      },
+      { rel: 'preload', as: 'image', href: '/img/wedding-florals.webp', type: 'image/webp' },
       { rel: 'canonical', href: siteUrl },
       { rel: 'icon', href: '/favicon.ico' },
     ],
