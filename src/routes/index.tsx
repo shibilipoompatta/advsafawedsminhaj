@@ -10,7 +10,7 @@ const googleCalendarUrl = `https://calendar.google.com/calendar/render?${new URL
   text: 'Wedding of Adv. Safa Janna TK & Muhammed Minhaj NC',
   dates: '20261129T044500Z/20261129T083000Z',
   ctz: 'Asia/Kolkata',
-  details: 'Join us to celebrate our wedding on Sunday, 29 November 2026.\nNikah: 10:15 AM IST.\nReception: 11:00 AM–2:00 PM IST.\nWith love and blessings from our families.\nhttps://pages.dev',
+  details: `Join us to celebrate our wedding on Sunday, 29 November 2026.\nNikah: 10:15 AM IST.\nReception: 11:00 AM–2:00 PM IST.\nWith love and blessings from our families.\n${siteUrl}`,
   location: 'NC Convention Centre, Pulparamba, Mukkam, Kozhikode, Kerala',
 })}`
 const mapUrl = 'https://www.google.com/maps/search/?api=1&query=NC+Convention+Centre+Pulparamba+Mukkam+Kozhikode'

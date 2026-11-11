@@ -60,7 +60,10 @@ export const Route = createRootRoute({
       { name: 'twitter:image', content: shareImage },
       { name: 'twitter:image:alt', content: shareImageAlt },
     ],
-    links: [{ rel: 'canonical', href: siteUrl }],
+    links: [
+      { rel: 'canonical', href: siteUrl },
+      { rel: 'icon', href: '/favicon.ico' },
+    ],
   }),
   shellComponent: RootDocument,
   notFoundComponent: NotFoundPage,

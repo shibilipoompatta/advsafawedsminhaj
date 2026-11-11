@@ -1,2 +1,2 @@
 // Keep metadata and guest sharing on the same clean invitation URL.
-export const siteUrl = 'https://pages.dev'
+export const siteUrl = 'https://advsafawedsminhaj.pages.dev/'
