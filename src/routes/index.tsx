@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, Heart, MapPin, Share2 } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, Heart, MapPin, Share2, Volume2, VolumeX } from 'lucide-react'
 import { siteUrl } from '@/lib/site'
 
 export const Route = createFileRoute('/')({ component: Home })
@@ -103,18 +103,34 @@ function InvitationMusic({
   audioRef: React.RefObject<HTMLAudioElement | null>
   active: boolean
 }) {
+  const [playing, setPlaying] = useState(false)
+  const userPausedRef = useRef(false)
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    const onPlay = () => setPlaying(true)
+    const onPause = () => setPlaying(false)
+    audio.addEventListener('play', onPlay)
+    audio.addEventListener('pause', onPause)
+    return () => {
+      audio.removeEventListener('play', onPlay)
+      audio.removeEventListener('pause', onPause)
+    }
+  }, [audioRef])
+
   useEffect(() => {
     const audio = audioRef.current
     if (!audio || !active) return
     let disposed = false
     const play = () => {
-      if (!disposed && audio.paused) void audio.play().catch(() => {
+      if (!disposed && audio.paused && !userPausedRef.current) void audio.play().catch(() => {
         // Autoplay may require a guest's first interaction with the invitation.
       })
     }
     const retryOnInteraction = (event: Event) => {
-      // Calendar, directions and other links do not trigger the music.
-      if (event.target instanceof Element && event.target.closest('a')) return
+      // Calendar, directions, music toggle and other links do not restart muted music.
+      if (event.target instanceof Element && event.target.closest('a, .music-toggle')) return
       play()
     }
     // The asset itself starts at the original song's 00:21, including on loops.
@@ -132,7 +148,36 @@ function InvitationMusic({
       audio.pause()
     }
   }, [active, audioRef])
-  return <audio ref={audioRef} loop preload="auto" hidden aria-hidden="true" src="/audio/wedding-background-from-21.m4a" />
+
+  function toggleMusic() {
+    const audio = audioRef.current
+    if (!audio) return
+    if (audio.paused) {
+      userPausedRef.current = false
+      void audio.play().catch(() => {})
+    } else {
+      userPausedRef.current = true
+      audio.pause()
+    }
+  }
+
+  return (
+    <>
+      <audio ref={audioRef} loop preload="auto" hidden aria-hidden="true" src="/audio/wedding-background-from-21.m4a" />
+      {active && (
+        <button
+          type="button"
+          className="music-toggle"
+          onClick={toggleMusic}
+          aria-label={playing ? 'Mute background music' : 'Play background music'}
+          aria-pressed={playing}
+        >
+          {playing ? <Volume2 size={14} aria-hidden="true" /> : <VolumeX size={14} aria-hidden="true" />}
+          <span>{playing ? 'Music' : 'Muted'}</span>
+        </button>
+      )}
+    </>
+  )
 }
 function InvitationCover({ closing, onOpen }: { closing: boolean; onOpen: () => void }) {
   const onOpenRef = useRef(onOpen)

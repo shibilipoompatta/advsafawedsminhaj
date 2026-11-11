@@ -3,18 +3,18 @@ var tsrStartManifest = () => ({ routes: {
 	__root__: {
 		filePath: "C:/Users/shibi/Desktop/advsafawedsminhaj/src/routes/__root.tsx",
 		children: ["/"],
-		css: ["/assets/index-BLcZtX1v.css"],
-		preloads: ["/assets/index-B7H3h9P0.js"],
+		css: ["/assets/index-58Uqb8xq.css"],
+		preloads: ["/assets/index-DfJtanCg.js"],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-B7H3h9P0.js"
+			src: "/assets/index-DfJtanCg.js"
 		} }]
 	},
 	"/": {
 		filePath: "C:/Users/shibi/Desktop/advsafawedsminhaj/src/routes/index.tsx",
 		children: void 0,
-		preloads: ["/assets/routes-BQU2npNy.js"]
+		preloads: ["/assets/routes--45OrkLD.js"]
 	}
 } });
 export { tsrStartManifest };

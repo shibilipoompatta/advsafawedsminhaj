@@ -292,7 +292,7 @@ function RootDocument({ children }) {
 	});
 }
 // src/routes/index.tsx
-var $$splitComponentImporter = () => import("./routes-BJDBXFe8.js");
+var $$splitComponentImporter = () => import("./routes-DULbHUm_.js");
 // src/routeTree.gen.ts
 var rootRouteChildren = { IndexRoute: createFileRoute("/")({ component: lazyRouteComponent($$splitComponentImporter, "component") }).update({
 	id: "/",

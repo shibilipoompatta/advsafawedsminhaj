@@ -1,7 +1,7 @@
-import { n as siteUrl } from "./router-BtuwyeUq.js";
+import { n as siteUrl } from "./router-DpHpp-dR.js";
 import { useEffect, useRef, useState } from "react";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, Heart, MapPin, Share2 } from "lucide-react";
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, Heart, MapPin, Share2, Volume2, VolumeX } from "lucide-react";
 // src/routes/index.tsx?tsr-split=component
 var weddingDate = (/* @__PURE__ */ new Date("2026-11-29T10:15:00+05:30")).getTime();
 var weddingDayEnd = (/* @__PURE__ */ new Date("2026-11-29T23:59:59+05:30")).getTime();
@@ -99,15 +99,29 @@ function Countdown() {
 	});
 }
 function InvitationMusic({ audioRef, active }) {
+	const [playing, setPlaying] = useState(false);
+	const userPausedRef = useRef(false);
+	useEffect(() => {
+		const audio = audioRef.current;
+		if (!audio) return;
+		const onPlay = () => setPlaying(true);
+		const onPause = () => setPlaying(false);
+		audio.addEventListener("play", onPlay);
+		audio.addEventListener("pause", onPause);
+		return () => {
+			audio.removeEventListener("play", onPlay);
+			audio.removeEventListener("pause", onPause);
+		};
+	}, [audioRef]);
 	useEffect(() => {
 		const audio = audioRef.current;
 		if (!audio || !active) return;
 		let disposed = false;
 		const play = () => {
-			if (!disposed && audio.paused) audio.play().catch(() => {});
+			if (!disposed && audio.paused && !userPausedRef.current) audio.play().catch(() => {});
 		};
 		const retryOnInteraction = (event) => {
-			if (event.target instanceof Element && event.target.closest("a")) return;
+			if (event.target instanceof Element && event.target.closest("a, .music-toggle")) return;
 			play();
 		};
 		audio.addEventListener("canplay", play);
@@ -124,14 +138,38 @@ function InvitationMusic({ audioRef, active }) {
 			audio.pause();
 		};
 	}, [active, audioRef]);
-	return /* @__PURE__ */ jsx("audio", {
+	function toggleMusic() {
+		const audio = audioRef.current;
+		if (!audio) return;
+		if (audio.paused) {
+			userPausedRef.current = false;
+			audio.play().catch(() => {});
+		} else {
+			userPausedRef.current = true;
+			audio.pause();
+		}
+	}
+	return /* @__PURE__ */ jsxs(Fragment, { children: [/* @__PURE__ */ jsx("audio", {
 		ref: audioRef,
 		loop: true,
 		preload: "auto",
 		hidden: true,
 		"aria-hidden": "true",
 		src: "/audio/wedding-background-from-21.m4a"
-	});
+	}), active && /* @__PURE__ */ jsxs("button", {
+		type: "button",
+		className: "music-toggle",
+		onClick: toggleMusic,
+		"aria-label": playing ? "Mute background music" : "Play background music",
+		"aria-pressed": playing,
+		children: [playing ? /* @__PURE__ */ jsx(Volume2, {
+			size: 14,
+			"aria-hidden": "true"
+		}) : /* @__PURE__ */ jsx(VolumeX, {
+			size: 14,
+			"aria-hidden": "true"
+		}), /* @__PURE__ */ jsx("span", { children: playing ? "Music" : "Muted" })]
+	})] });
 }
 function InvitationCover({ closing, onOpen }) {
 	const onOpenRef = useRef(onOpen);
